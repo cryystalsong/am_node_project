@@ -7,7 +7,14 @@ const expressHBs = require('express-handlebars');
 const app = express();
 
 // express handle bars is not built in, so must explicitly register it w/ node
-app.engine('hbs', expressHBs()); //'hbs' is arbitrarily given here, also becomes the file type .hbs
+app.engine(
+    'hbs', //'hbs' is arbitrarily given here, also becomes the file type .hbs 
+    expressHBs({ 
+        layoutsDir: 'views/hbs-views/layouts', 
+        defaultLayout: 'main-layout',
+        extname: 'hbs'
+    })
+); 
 app.set('view engine', 'hbs');
 app.set('views', 'views/hbs-views');
 
