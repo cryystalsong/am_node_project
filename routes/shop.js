@@ -13,7 +13,9 @@ router.get('/', (req, res, next) => {
 
   // defined 'pug' as the default render engine, 
   // also no need to define path to 'shop' since we already previously defined views to be within the dir `view`
-  res.render('shop'); 
+  res.render('shop',{
+    products: adminData.products
+  }); 
 });
 
 module.exports = router;
