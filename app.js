@@ -2,11 +2,17 @@ const path = require('path');
 
 const express = require('express');
 const bodyParser = require('body-parser');
+const expressHBs = require('express-handlebars');
 
 const app = express();
 
-app.set('view engine', 'pug');
-app.set('views', 'views/pug-views');
+// express handle bars is not built in, so must explicitly register it w/ node
+app.engine('hbs', expressHBs()); //'hbs' is arbitrarily given here, also becomes the file type .hbs
+app.set('view engine', 'hbs');
+app.set('views', 'views/hbs-views');
+
+// app.set('view engine', 'pug');
+// app.set('views', 'views/pug-views');
 
 const adminData = require('./routes/admin');
 const shopRoutes = require('./routes/shop');
