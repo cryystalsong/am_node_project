@@ -8,6 +8,9 @@ router.get('/', shopController.getIndex);
 
 router.get('/products', shopController.getProducts);
 
+// colon in front of :productId will tell express to do dynamic routing 
+router.get('/products/:productId', shopController.getProduct); 
+
 router.get('/cart', shopController.getCart);
 
 router.get('/orders', shopController.getOrders);
