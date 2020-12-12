@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const bodyParser = require('body-parser');
 // const expressHBs = require('express-handlebars');
+const mongoConnect = require('./util/database')
 
 const app = express();
 
@@ -40,4 +41,6 @@ app.use(shopRoutes);
 
 app.use(errorsController.get404);
 
-app.listen(4000);
+mongoConnect((client)=>{
+    app.listen(4000);
+});
