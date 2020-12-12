@@ -1,49 +1,22 @@
-const mongodb = require('mongodb');
-const getDb = require('../util/database').getDb;
+const mongoose = require('mongoose');
 
-module.exports = class Product {
-    constructor(title, imageUrl, description, price) {
-        this.title = title;
-        this.imageUrl = imageUrl;
-        this.description = description;
-        this.price = price;
+const productSchema = new mongoose.Schema({
+    title: {
+        type: String,
+        required: true
+    },
+    imageUrl: {
+        type: String,
+        required: true
+    },
+    description: {
+        type: String,
+        required: true
+    },
+    price: {
+        type: Number,
+        required: true
     }
+});
 
-    save() {
-        const db = getDb();
-        return db.collection('products') //connects to existing 'products' collection, else creates a new collection 
-            .insertOne(this)
-            .then(result => {
-                console.log(result);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
-    static findById(productId, callback) {
-        const db = getDb();
-        db.collection('products').find({
-            _id: new mongodb.ObjectID(productId)
-            })
-            .next()
-            .then(product => {
-                callback(product);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-
-    static fetchAll(callback) {
-        const db = getDb();
-        db.collection('products').find()
-            .toArray()
-            .then(products => {
-                callback(products);
-            })
-            .catch(err => {
-                console.log(err);
-            });
-    }
-};
+module.exports = mongoose.model('Product',productSchema);

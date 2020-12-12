@@ -15,13 +15,20 @@ exports.postAddProduct = (req, res, next) => {
   const imageUrl = req.body.imageUrl;
   const price = req.body.price;
   const description = req.body.description;
-  const product = new Product(title, imageUrl, description, price);
-  product.save();
+
+  const product = new Product({
+    title: title,
+    imageUrl: imageUrl,
+    price: price,
+    description: description,
+  });
+
+  product.save(); //this save() method is now defined by mongoose, not us! mongoose will manage saving to db
   res.redirect('/');
 };
 
 exports.getProducts = (req, res, next) => {
-  Product.fetchAll(products => {
+  Product.find().then(products => {
     res.render('admin/products', {
       prods: products,
       pageTitle: 'Admin Products',

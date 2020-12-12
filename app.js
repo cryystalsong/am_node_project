@@ -24,6 +24,8 @@ app.use(shopRoutes);
 
 app.use(errorsController.get404);
 
-mongoConnect(()=>{
-    app.listen(4000);
+getDbCredentials(connectionPath => {
+    mongoose.connect(connectionPath).then(result=>{
+        app.listen(4000);
+    });
 });
