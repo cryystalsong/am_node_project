@@ -1,21 +1,5 @@
-const fs = require('fs'); //allows us to save to a FILE instead of array here
-const path = require('path');
-const rootDir = require('../util/path');
-
 const mongodb = require('mongodb');
 const getDb = require('../util/database').getDb;
-
-const productsPath = path.join(rootDir, 'data', 'product.json');
-
-const getProducts = (callback) => {
-    fs.readFile(productsPath, (err, fileContent) => {
-        if (err) {
-            callback([]);
-        } else {
-            callback(JSON.parse(fileContent));
-        }
-    });
-}
 
 module.exports = class Product {
     constructor(title, imageUrl, description, price) {
