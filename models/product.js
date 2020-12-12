@@ -2,6 +2,9 @@ const fs = require('fs'); //allows us to save to a FILE instead of array here
 const path = require('path');
 const rootDir = require('../util/path');
 
+const mongodb = require('mongodb');
+const getDb = require('../util/database').getDb;
+
 const productsPath = path.join(rootDir, 'data', 'product.json');
 
 const getProducts = (callback) => {
@@ -23,23 +26,40 @@ module.exports = class Product {
     }
 
     save() {
-        this.id = Math.random().toString();
-        getProducts((products) => {
-            products.push(this);
-            fs.writeFile(productsPath, JSON.stringify(products), (err) => {
+        const db = getDb();
+        return db.collection('products') //connects to existing 'products' collection, else creates a new collection 
+            .insertOne(this)
+            .then(result => {
+                console.log(result);
+            })
+            .catch(err => {
                 console.log(err);
             });
-        });
     }
-    
+
     static findById(productId, callback) {
-        getProducts(products => {
-            let product = products.find(product => product.id == productId);
-            callback(product);
-        });
+        const db = getDb();
+        db.collection('products').find({
+            _id: new mongodb.ObjectID(productId)
+            })
+            .next()
+            .then(product => {
+                callback(product);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 
     static fetchAll(callback) {
-        getProducts(callback);
+        const db = getDb();
+        db.collection('products').find()
+            .toArray()
+            .then(products => {
+                callback(products);
+            })
+            .catch(err => {
+                console.log(err);
+            });
     }
 };
