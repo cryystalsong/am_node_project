@@ -15,8 +15,16 @@ const productSchema = new mongoose.Schema({
     },
     price: {
         type: Number,
+        required: true    
+    },
+    depositRate: {
+        type: Number,
+        required: true
+    },
+    postalCode: {
+        type: String,
         required: true
     }
 });
 
-module.exports = mongoose.model('Product',productSchema);
+module.exports = mongoose.model('Product', productSchema);
