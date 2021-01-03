@@ -28,10 +28,8 @@ exports.getEditProduct = (req, res, next) => {
 
 exports.postEditProduct = (req, res, next) => {
   const productId = req.params.productId;
-  console.log(productId);
 
   Product.findById(productId).then(product => { 
-    console.log(product);
     product.title = req.body.title;
     product.imageUrl = req.body.imageUrl;
     product.price = req.body.price;
@@ -66,6 +64,16 @@ exports.postAddProduct = (req, res, next) => {
   product.save(); //this save() method is now defined by mongoose, not us! mongoose will manage saving to db
   res.redirect('/');
 };
+
+exports.postDeleteProduct = (req, res, next) => {
+  const productId = req.params.productId;
+
+  Product.findByIdAndDelete(productId).then(result=>{
+      res.redirect('/admin/products');
+    }).catch(err=>{
+      console.log(err);
+    });
+  }
 
 exports.getProducts = (req, res, next) => {
   Product.find().then(products => {
